@@ -1,0 +1,32 @@
+version: "3"
+services:
+  to-do-server:
+    build: ./to-do-server
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    environment:
+      PORT : 8080
+      HOST: 0.0.0.0
+      USERNAME : postgres
+      PASSWORD: password
+      DB: to-do
+      HOSTNAME: postgres
+
+  to-do-app:
+    build:
+      dockerfile: Dockerfile
+      context: ./to-do-app
+    # environment: 
+    #   REACT_APP_URL: http://to-do-server:8080
+    ports:
+      - "80:80"
+    
+
+  postgres:
+    image: postgres:11.2-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: to-do
